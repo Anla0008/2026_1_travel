@@ -1,2 +1,44 @@
 {%include "_header.html"%}
 
+<main>
+    <h1>Create destination</h1>
+
+    <form mix-post="/api-destinations" autocomplete="off">
+        <div>
+            <label>Title</label>
+            <input type="text" name="destination_title" placeholder="Destination title"
+                mix-validate="{{x.REGEX_DESTINATION_TITLE}}">
+        </div>
+
+        <div>
+            <label>Date from</label>
+            <input type="date" name="destination_date_from">
+        </div>
+
+        <div>
+            <label>Date to</label>
+            <input type="date" name="destination_date_to">
+        </div>
+
+        <div>
+            <label>Description</label>
+            <textarea name="destination_desception" placeholder="Write a shot description"></textarea>
+        </div>
+
+        <div>
+            <label>Location</label>
+            <input type="text" name="destination_location" placeholder="City or area"
+                mix-validate="{{x.REGEX_DESTINATION_LOCATION}}">
+        </div>
+
+        <div>
+            <label>Country</label>
+            <input type="text" name="destination_country" placeholder="Country"
+                mix-validate="{{x.REGEX_DESTINATION_COUNTRY}}">
+        </div>
+
+        <button>Create destination</button>
+    </form>
+</main>
+
+{%include "_footer.html"%}

@@ -80,7 +80,7 @@ def validate_user_password():
 #-------------VALIDATION FOR DISTINATION TITLE-------------#
 DESTINATION_TITLE_MIN = 2 
 DESTINATION_TITLE_Max = 100
-REGEX_DESTINATION_TITLE = f"^.{{{DESTINATION_TITLE_MIN}, {DESTINATION_TITLE_Max}}}$"
+REGEX_DESTINATION_TITLE = f"^.{{{DESTINATION_TITLE_MIN},{DESTINATION_TITLE_Max}}}$"
 
 def validate_destination_title():
     destination_title = request.form.get ("destination_title", "").strip()
@@ -113,7 +113,7 @@ def validate_destination_description():
 #-------------VALIDATION FOR DISTINATION LOCATION-------------#
 DESTINATION_LOCATION_MIN = 2
 DESTINATION_LOCATION_MAX = 100
-REGEX_DESTINATION_LOCATION = f"^.{{{DESTINATION_LOCATION_MIN}, {DESTINATION_LOCATION_MAX}}}$"
+REGEX_DESTINATION_LOCATION = f"^.{{{DESTINATION_LOCATION_MIN},{DESTINATION_LOCATION_MAX}}}$"
 
 def validate_destination_location():
     destination_location = request.form.get("destination_location", "").strip()
@@ -125,7 +125,7 @@ def validate_destination_location():
 #-------------VALIDATION FOR DISTINATION COUNTRY-------------#
 DESTINATION_COUNTRY_MIN = 2
 DESTINATION_COUNTRY_MAX = 100
-REGEX_DESTINATION_COUNTRY = f"^.{{{DESTINATION_COUNTRY_MIN}, {DESTINATION_COUNTRY_MAX}}}$"
+REGEX_DESTINATION_COUNTRY = f"^.{{{DESTINATION_COUNTRY_MIN},{DESTINATION_COUNTRY_MAX}}}$"
 
 def validate_destination_country():
     destination_country=request.form.get("destination_country", "").strip()

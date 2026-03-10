@@ -213,7 +213,7 @@ def logout():
         return "Hovsa"
 
 #-------------CREATE DESTINATION-------------#
-@app.post("/api-destination")
+@app.post("/api-destinations")
 def api_create_destination():
     try:
         user=session.get("user")
@@ -228,7 +228,7 @@ def api_create_destination():
         destination_country=x.validate_destination_country()
 
         destination_pk = uuid.uuid4().hex
-        destination_created_at = int (time())
+        destination_created_at = int (time.time())
         user_fk=user["user_pk"]
 
         db, cursor = x.db()
@@ -237,23 +237,23 @@ def api_create_destination():
         """
 
         cursor.execute (q, (            destination_pk,
-            destination_title,
-            destination_date_from,
-            destination_date_to,
-            destination_description,
-            destination_location,
-            destination_country,
-            destination_created_at,
-            user_fk
-            ))
-            db.commit()
+        destination_title,
+        destination_date_from,
+        destination_date_to,
+        destination_description,
+        destination_location,
+        destination_country,
+        destination_created_at,
+        user_fk
+        ))
+        db.commit()
 
-            return jsonify({
-                "message":"Destination created",
-                "destination_pk":destination:pk
-            }), 201
+        return jsonify({
+            "message": "Destination created",
+            "destination_pk": destination_pk
+        }), 201
 
-        except Exception as ex:
+    except Exception as ex:
         ic(ex)
 
         if "company_exception destination_title" in str(ex):
@@ -276,3 +276,17 @@ def api_create_destination():
     finally:
         if "cursor" in locals(): cursor.close()
         if "db" in locals(): db.close()
+
+#-------------SHOW CREATE DESTINATION PAGE-------------#
+@app.get("/create-destination")
+@x.no_cache
+def show_create_destination():
+    try:
+        user=session.get("user", "")
+        if not user:
+            return redirect("/login")
+        return render_template("page_create_destination.html", user=user, x=x)
+    except Exception as ex:
+        ic(ex)
+        return "Hovsa"
+
