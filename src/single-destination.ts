@@ -1,4 +1,4 @@
-import { getSingleDestination, updateDestination } from "./api-functions.js";
+import { getSingleDestination, updateDestination, deleteDestination } from "./api-functions.js";
 
 async function loadSingleDestination() {
   const destinationPk = window.location.pathname.split("/").pop()!;
@@ -35,6 +35,18 @@ const form = document.getElementById("edit_destination_form") as HTMLAnchorEleme
 
 if (form) {
   form.addEventListener("submit", handleUpdateDestination);
+}
+
+async function handleDeleteDestination() {
+  const destinationPk = window.location.pathname.split("/").pop()!;
+
+  await deleteDestination(destinationPk);
+  window.location.href = "/destinations";
+}
+
+const deleteButton = document.getElementById("delete_destination_btn") as HTMLButtonElement;
+if (deleteButton) {
+  deleteButton.addEventListener("click", handleDeleteDestination);
 }
 
 loadSingleDestination();

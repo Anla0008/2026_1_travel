@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { getSingleDestination, updateDestination } from "./api-functions.js";
+import { getSingleDestination, updateDestination, deleteDestination } from "./api-functions.js";
 function loadSingleDestination() {
     return __awaiter(this, void 0, void 0, function* () {
         var _a;
@@ -35,5 +35,16 @@ function handleUpdateDestination(event) {
 const form = document.getElementById("edit_destination_form");
 if (form) {
     form.addEventListener("submit", handleUpdateDestination);
+}
+function handleDeleteDestination() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const destinationPk = window.location.pathname.split("/").pop();
+        yield deleteDestination(destinationPk);
+        window.location.href = "/destinations";
+    });
+}
+const deleteButton = document.getElementById("delete_destination_btn");
+if (deleteButton) {
+    deleteButton.addEventListener("click", handleDeleteDestination);
 }
 loadSingleDestination();

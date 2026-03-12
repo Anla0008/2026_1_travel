@@ -17,6 +17,7 @@ export function getDestinations() {
         return data;
     });
 }
+// Update funktion
 export function getSingleDestination(destinationPk) {
     return __awaiter(this, void 0, void 0, function* () {
         const singleDestinationResponse = yield fetch(`/api-destinations/${destinationPk}`);
@@ -37,6 +38,19 @@ export function updateDestination(destinationPk, formData) {
             throw new Error("Failed to update destination");
         }
         const data = yield updateResponse.json();
+        return data;
+    });
+}
+// Delete funktion
+export function deleteDestination(destinationPk) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const deleteResponse = yield fetch(`/api-destinations/${destinationPk}`, {
+            method: "DELETE",
+        });
+        if (!deleteResponse.ok) {
+            throw new Error("Failed to delete destination");
+        }
+        const data = yield deleteResponse.json();
         return data;
     });
 }

@@ -376,7 +376,7 @@ def api_destination(destination_pk):
         db, cursor = x.db()
         q = """
             UPDATE destinations 
-            SET destionation_title = %s,        
+            SET destination_title = %s,        
                 destination_date_from = %s,
                 destination_date_to = %s,
                 destination_description = %s,
@@ -416,6 +416,32 @@ def api_destination(destination_pk):
         if "company_exception destination_country" in str(ex):
             return jsonify({"error": "destination country invalid"}), 400
 
+        return jsonify({"error": "System under maintenance"}), 400
+
+    finally:
+        if "cursor" in locals(): cursor.close()
+        if "db" in locals(): db.close()
+
+#-------------DELETE DESTINATION-------------#
+@app.delete("/api-destinations/<destination_pk>")
+def api_delete_destination(destination_pk):
+    try:
+        user = session.get("user")
+        if not user:
+            return jsonify({"error": "Unauthorized"}), 401
+
+        db, cursor = x.db()
+        q = """
+            DELETE FROM destinations
+            WHERE destination_pk = %s
+        """
+        cursor.execute(q, (destination_pk,))
+        db.commit()
+
+        return jsonify({"message": "Destination deleted"}), 200
+
+    except Exception as ex:
+        ic(ex)
         return jsonify({"error": "System under maintenance"}), 400
 
     finally:

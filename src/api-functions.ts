@@ -8,6 +8,7 @@ export async function getDestinations() {
   return data;
 }
 
+// Update funktion
 export async function getSingleDestination(destinationPk: string) {
   const singleDestinationResponse = await fetch(`/api-destinations/${destinationPk}`);
 
@@ -29,5 +30,19 @@ export async function updateDestination(destinationPk: string, formData: FormDat
   }
 
   const data = await updateResponse.json();
+  return data;
+}
+
+// Delete funktion
+export async function deleteDestination(destinationPk: string) {
+  const deleteResponse = await fetch(`/api-destinations/${destinationPk}`, {
+    method: "DELETE",
+  });
+
+  if (!deleteResponse.ok) {
+    throw new Error("Failed to delete destination");
+  }
+
+  const data = await deleteResponse.json();
   return data;
 }
