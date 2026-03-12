@@ -1,7 +1,15 @@
 {%include "_header.html" %}
 
-<main>
+<main class="page-shell">
+    <section class="hero-card">
+        <h1>Welcome {{ user.user_first_name if user else "" }}</h1>
+        <p>Your travel dashboard makes it easy to create, browse and manage destinations.</p>
 
+        <div class="button-group">
+            <a class="button-link primary-btn" href="/create-destination">Create destination</a>
+            <a class="button-link secondary-btn" href="/destinations">View all destinations</a>
+        </div>
+    </section>
 </main>
 
 {%include "_footer.html" %}

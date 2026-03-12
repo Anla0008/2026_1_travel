@@ -319,7 +319,7 @@ def api_get_destinations():
 def show_destinations():
     try:
         user = session.get("user", "")
-        return render_template("/page_destinations.html", user=user, x=x)
+        return render_template("page_destinations.html", user=user, x=x)
     except Exception as ex:
         ic(ex)
         return "Hovsa"
@@ -330,7 +330,8 @@ def api_get_destination(destination_pk):
     try:
         db, cursor = x.db()
         q= """
-            SELECT * FROM destinations WHERE destination_pk = %s
+            SELECT * FROM destinations 
+            WHERE destination_pk = %s
         """
 
         cursor.execute(q, (destination_pk,))
@@ -340,7 +341,7 @@ def api_get_destination(destination_pk):
     
     except Exception as ex:
         ic(ex)
-        return jsonify({"Error": "System under maintenance"}), 500
+        return jsonify({"error": "System under maintenance"}), 500
     
     finally:
         if "cursor" in locals(): cursor.close()
@@ -352,6 +353,8 @@ def api_get_destination(destination_pk):
 def show_destination(destination_pk):
     try:
         user = session.get("user", "")
+        if not user:
+            return redirect("/login")
         return render_template("page_single_destination.html", user=user, x=x)
     
     except Exception as ex:
@@ -364,7 +367,7 @@ def api_destination(destination_pk):
     try:
         user = session.get("user")
         if not user:
-            return jsonify({"Error": "Unauthorized"}), 401
+            return jsonify({"error": "Unauthorized"}), 401
         
         destination_title = x.validate_destination_title()
         destination_date_from = x.validate_destination_date_from()
@@ -382,7 +385,7 @@ def api_destination(destination_pk):
                 destination_description = %s,
                 destination_location = %s,
                 destination_country = %s
-            WHERE destination_pk = %s
+            WHERE destination_pk = %s AND user_fk = %s
         """
 
         cursor.execute (q, (
@@ -392,7 +395,8 @@ def api_destination(destination_pk):
             destination_description,
             destination_location,
             destination_country,
-            destination_pk
+            destination_pk, 
+            user["user_pk"]
         ))
         db.commit()
 
@@ -433,9 +437,9 @@ def api_delete_destination(destination_pk):
         db, cursor = x.db()
         q = """
             DELETE FROM destinations
-            WHERE destination_pk = %s
+            WHERE destination_pk = %s AND user_fk = %s
         """
-        cursor.execute(q, (destination_pk,))
+        cursor.execute(q, (destination_pk, user["user_pk"],))
         db.commit()
 
         return jsonify({"message": "Destination deleted"}), 200

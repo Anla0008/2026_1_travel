@@ -20,6 +20,12 @@ function loadSingleDestination() {
         document.getElementById("destination_description").value = (_a = destination.destination_description) !== null && _a !== void 0 ? _a : "";
         document.getElementById("destination_location").value = destination.destination_location;
         document.getElementById("destination_country").value = destination.destination_country;
+        const deleteButton = document.getElementById("delete_destination_btn");
+        const updateButton = document.getElementById("update_destination_btn");
+        if (loggedInUserPk && destination.user_fk === loggedInUserPk) {
+            deleteButton.hidden = false;
+            updateButton.hidden = false;
+        }
     });
 }
 function handleUpdateDestination(event) {
@@ -38,6 +44,9 @@ if (form) {
 }
 function handleDeleteDestination() {
     return __awaiter(this, void 0, void 0, function* () {
+        const confirmed = confirm("Are you sure you want to delete this destination?");
+        if (!confirmed)
+            return;
         const destinationPk = window.location.pathname.split("/").pop();
         yield deleteDestination(destinationPk);
         window.location.href = "/destinations";

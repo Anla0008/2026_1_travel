@@ -12,16 +12,15 @@
 
     <div id="tooltip"></div>
 
-    <nav>
-        <a href="/">Home</a>
-        <a href="/signup">Signup</a>
+    <nav class="main-nav">
+        <a href="/profile">Profile</a>
+        <a href="/destinations">All destinations</a>
+
+        {% if user %}
         <a href="/create-destination">Create destination</a>
-
-        {% if not user %}
-        <a href="/login">Login</a>
-        {% else %}
         <a href="/logout">Logout</a>
-
+        {% else %}
+        <a href="/signup">Signup</a>
+        <a href="/login">Login</a>
         {% endif %}
-
     </nav>

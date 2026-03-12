@@ -36,12 +36,15 @@
             <input id="destination_country" name="destination_country" type="text">
         </div>
 
-        <button type="submit">Update destination</button>
+        <button id="update_destination_btn" type="submit" hidden>Update destination</button>
 
-        <button id="delete_destination_btn" type="button">Delete destination</button>
+        {% if user %}
+        <button id="delete_destination_btn" type="button" hidden>Delete destination</button>
+        {% endif %}
     </form>
 </main>
 
+<script>const loggedInUserPk = "{{user.user_pk if user else ''}}";</script>
 <script type="module" src="/static/single-destination.js" defer></script>
 
 {%include "_footer.html"%}

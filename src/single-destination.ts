@@ -1,4 +1,5 @@
 import { getSingleDestination, updateDestination, deleteDestination } from "./api-functions.js";
+declare const loggedInUserPk: string;
 
 async function loadSingleDestination() {
   const destinationPk = window.location.pathname.split("/").pop()!;
@@ -17,6 +18,14 @@ async function loadSingleDestination() {
   (document.getElementById("destination_location") as HTMLInputElement).value = destination.destination_location;
 
   (document.getElementById("destination_country") as HTMLInputElement).value = destination.destination_country;
+
+  const deleteButton = document.getElementById("delete_destination_btn") as HTMLButtonElement;
+  const updateButton = document.getElementById("update_destination_btn") as HTMLButtonElement;
+
+  if (loggedInUserPk && destination.user_fk === loggedInUserPk) {
+    deleteButton.hidden = false;
+    updateButton.hidden = false;
+  }
 }
 
 async function handleUpdateDestination(event: Event) {
@@ -38,9 +47,13 @@ if (form) {
 }
 
 async function handleDeleteDestination() {
+  const confirmed = confirm("Are you sure you want to delete this destination?");
+  if (!confirmed) return;
+
   const destinationPk = window.location.pathname.split("/").pop()!;
 
   await deleteDestination(destinationPk);
+
   window.location.href = "/destinations";
 }
 
