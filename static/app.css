@@ -66,8 +66,8 @@ form {
 }
 
 .destination-card {
-  padding: 1.25rem 0;
   border-bottom: 1px solid #f1d9e3;
+  margin-bottom: 20px;
 }
 
 .destination-card h2 {
@@ -133,4 +133,31 @@ button[type="submit"]:hover,
 .secondary-btn {
   background: #fbe6ee;
   color: #6e4b5c;
+}
+
+.destination-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.destination-action {
+  display: inline-block;
+  text-decoration: none;
+  font-size: 13px;
+  padding: 4px 8px;
+  border: 1px solid #e4c6d3;
+  border-radius: 6px;
+  background: white;
+  color: #5c3b4a;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.destination-action:hover {
+  background: #f7e3ec;
+}
+
+.delete-btn {
+  border-color: #e1a6bb;
 }

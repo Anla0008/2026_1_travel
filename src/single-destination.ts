@@ -19,12 +19,31 @@ async function loadSingleDestination() {
 
   (document.getElementById("destination_country") as HTMLInputElement).value = destination.destination_country;
 
-  const deleteButton = document.getElementById("delete_destination_btn") as HTMLButtonElement;
-  const updateButton = document.getElementById("update_destination_btn") as HTMLButtonElement;
+  // const deleteButton = document.getElementById("delete_destination_btn") as HTMLButtonElement;
+  // const updateButton = document.getElementById("update_destination_btn") as HTMLButtonElement;
+
+  // if (loggedInUserPk && destination.user_fk === loggedInUserPk) {
+  //   deleteButton.hidden = false;
+  //   updateButton.hidden = false;
+  // }
+
+  const ownerActions = document.getElementById("destination_owner_actions") as HTMLDivElement;
 
   if (loggedInUserPk && destination.user_fk === loggedInUserPk) {
-    deleteButton.hidden = false;
-    updateButton.hidden = false;
+    ownerActions.innerHTML = `
+    <button id="update_destination_btn" type="submit">Update destination</button>
+    <button id="delete_destination_btn" type="button">Delete destination</button>
+  `;
+
+    const deleteButton = document.getElementById("delete_destination_btn") as HTMLButtonElement;
+
+    deleteButton.addEventListener("click", async () => {
+      const confirmed = confirm("Are you sure you want to delete this destination?");
+      if (!confirmed) return;
+
+      await deleteDestination(destinationPk);
+      window.location.href = "/destinations";
+    });
   }
 }
 

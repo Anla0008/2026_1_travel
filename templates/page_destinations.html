@@ -2,6 +2,11 @@
 
 <main>
     <h1>All destinations</h1>
+
+    <script>
+        const loggedInUserPk = "{{ user.user_pk if user else '' }}";
+    </script>
+
     <section id="destinations" class="destinations-list"></section>
 </main>
 
