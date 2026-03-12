@@ -290,3 +290,134 @@ def show_create_destination():
         ic(ex)
         return "Hovsa"
 
+#-------------GET ALL DESTINATIONS-------------#
+@app.get("/api-destinations")
+def api_get_destinations():
+    try:
+        db, cursor = x.db()
+        q="""
+            SELECT * FROM destinations
+            ORDER BY destination_created_at DESC
+        """
+
+        cursor.execute(q)
+        destinations = cursor.fetchall()
+
+        return jsonify(destinations), 200
+    
+    except Exception as ex:
+        ic(ex)
+        return jsonify({"error": "System under maintenance"}), 500
+    
+    finally:
+        if "cursor" in locals(): cursor.close()
+        if "db" in locals(): db.close()
+
+#-------------SHOW ALL DESTINATIONS-------------#
+@app.get("/destinations")
+@x.no_cache
+def show_destinations():
+    try:
+        user = session.get("user", "")
+        return render_template("/page_destinations.html", user=user, x=x)
+    except Exception as ex:
+        ic(ex)
+        return "Hovsa"
+
+#-------------SHOW ONE DESTINATIONS-------------#
+@app.get("/api-destinations/<destination_pk>")
+def api_get_destination(destination_pk):
+    try:
+        db, cursor = x.db()
+        q= """
+            SELECT * FROM destinations WHERE destination_pk = %s
+        """
+
+        cursor.execute(q, (destination_pk,))
+        destination = cursor.fetchone()
+
+        return jsonify(destination), 200
+    
+    except Exception as ex:
+        ic(ex)
+        return jsonify({"Error": "System under maintenance"}), 500
+    
+    finally:
+        if "cursor" in locals(): cursor.close()
+        if "db" in locals(): db.close()
+
+#-------------SHOW ONE DESTINATION ID-------------#
+@app.get("/destination/<destination_pk>")
+@x.no_cache
+def show_destination(destination_pk):
+    try:
+        user = session.get("user", "")
+        return render_template("page_single_destination.html", user=user, x=x)
+    
+    except Exception as ex:
+        ic(ex)
+        return "Hovsa"
+
+#-------------UPDATE DESTINATION-------------#
+@app.patch("/api-destinations/<destination_pk>")
+def api_destination(destination_pk):
+    try:
+        user = session.get("user")
+        if not user:
+            return jsonify({"Error": "Unauthorized"}), 401
+        
+        destination_title = x.validate_destination_title()
+        destination_date_from = x.validate_destination_date_from()
+        destination_date_to = x.validate_destination_date_to()
+        destination_description = x.validate_destination_description()
+        destination_location = x.validate_destination_location()
+        destination_country = x.validate_destination_country()
+
+        db, cursor = x.db()
+        q = """
+            UPDATE destinations 
+            SET destionation_title = %s,        
+                destination_date_from = %s,
+                destination_date_to = %s,
+                destination_description = %s,
+                destination_location = %s,
+                destination_country = %s
+            WHERE destination_pk = %s
+        """
+
+        cursor.execute (q, (
+            destination_title,
+            destination_date_from,
+            destination_date_to,
+            destination_description,
+            destination_location,
+            destination_country,
+            destination_pk
+        ))
+        db.commit()
+
+        return jsonify({"message": "Destination updated"}), 200
+    
+    except Exception as ex:
+        ic(ex)
+
+        if "company_exception destination_title" in str(ex):
+            return jsonify({"error": "destination title invalid"}), 400
+
+        if "company_exception destination_date_from" in str(ex):
+            return jsonify({"error": "destination date from required"}), 400
+
+        if "company_exception destination_date_to" in str(ex):
+            return jsonify({"error": "destination date to required"}), 400
+
+        if "company_exception destination_location" in str(ex):
+            return jsonify({"error": "destination location invalid"}), 400
+
+        if "company_exception destination_country" in str(ex):
+            return jsonify({"error": "destination country invalid"}), 400
+
+        return jsonify({"error": "System under maintenance"}), 400
+
+    finally:
+        if "cursor" in locals(): cursor.close()
+        if "db" in locals(): db.close()

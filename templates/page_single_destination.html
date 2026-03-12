@@ -1,0 +1,45 @@
+{%include "_header.html"%}
+
+<main>
+    <h1>Edit destination</h1>
+
+    <form id="edit_destination_form">
+        <input id="destination_pk" type="hidden" , name="destination_pk">
+
+        <div>
+            <label for="destination_title">Title</label>
+            <input id="destination_title" name="destination_title" type="text">
+        </div>
+
+        <div>
+            <label for="destination_date_from">Date from</label>
+            <input id="destination_date_from" name="destination_date_from" type="date">
+        </div>
+
+        <div>
+            <label for="destination_date_to">Date to</label>
+            <input id="destination_date_to" name="destination_date_to" type="date">
+        </div>
+
+        <div>
+            <label for="destination_description">Description</label>
+            <textarea id="destination_description" name="destination_description"></textarea>
+        </div>
+
+        <div>
+            <label for="destination_location">Location</label>
+            <input id="destination_location" name="destination_location" type="text">
+        </div>
+
+        <div>
+            <label for="destination_country">Country</label>
+            <input id="destination_country" name="destination_country" type="text">
+        </div>
+
+        <button type="submit">Update destination</button>
+    </form>
+</main>
+
+<script type="module" src="/static/single-destination.js" defer></script>
+
+{%include "_footer.html"%}
